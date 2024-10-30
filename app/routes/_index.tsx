@@ -13,7 +13,6 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -30,26 +29,56 @@ export default function Index() {
   }, []);
 
   return (
-    <div>
-      <h2>Product List</h2>
-      <ul>
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">Product List</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map(product => (
-          <li key={product.id}>
-            <Link to={`/products/${product.id}`}>
-              <h3>{product.name}</h3>
-              <p>Price: {product.price}</p>
-              <p>Category: {product.category}</p>
-              <p>Description: {product.description}</p>
-              <p>Stock: {product.stock}</p>
-              <div>
+          <Link 
+            key={product.id}
+            to={`/products/${product.id}`}
+            className="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+          >
+            <div className="aspect-w-16 aspect-h-9 overflow-hidden bg-gray-100">
+              <div className="flex gap-2 p-2 overflow-x-auto">
                 {product.images.map((url, idx) => (
-                  <img key={idx} src={url} alt={`${product.name} - ${idx + 1}`} width="100" />
+                  <img
+                    key={idx}
+                    src={url}
+                    alt={`${product.name} - ${idx + 1}`}
+                    className="h-32 w-32 object-cover rounded"
+                  />
                 ))}
               </div>
-            </Link>
-          </li>
+            </div>
+            
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-blue-600">
+                {product.name}
+              </h3>
+              
+              <div className="space-y-2">
+                <p className="text-lg font-bold text-blue-600">
+                  ${product.price}
+                </p>
+                
+                <p className="text-sm text-gray-600">
+                  <span className="inline-block bg-gray-100 px-2 py-1 rounded">
+                    {product.category}
+                  </span>
+                </p>
+                
+                <p className="text-gray-600 line-clamp-2">
+                  {product.description}
+                </p>
+                
+                <p className="text-sm text-gray-500">
+                  Stock: <span className="font-medium">{product.stock}</span>
+                </p>
+              </div>
+            </div>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
