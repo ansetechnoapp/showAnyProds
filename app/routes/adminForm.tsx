@@ -7,7 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import FirebaseService from "../../services/FirebaseService";
 
-
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   price: yup.number().min(0, 'Price must be positive').required(),
@@ -57,48 +56,103 @@ const AdminForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <label>Name</label>
-        <input {...register('name')} />
-        <p>{errors.name?.message}</p>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Add New Product</h2>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Name</label>
+              <input
+                {...register('name')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Price</label>
+              <input
+                type="number"
+                {...register('price')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Category</label>
+              <input
+                {...register('category')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                {...register('description')}
+                rows={4}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Stock</label>
+              <input
+                type="number"
+                {...register('stock')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Specifications</label>
+              <Controller
+                name="specifications"
+                control={control}
+                render={({ field }) => (
+                  <textarea
+                    {...field}
+                    rows={4}
+                    placeholder="Format: key=value, one per line"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                )}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Images</label>
+              <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                <div className="space-y-1 text-center">
+                  <div className="flex text-sm text-gray-600">
+                    <input
+                      type="file"
+                      multiple
+                      {...register('images')}
+                      className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Add Product
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div>
-        <label>Price</label>
-        <input type="number" {...register('price')} />
-        <p>{errors.price?.message}</p>
-      </div>
-      <div>
-        <label>Category</label>
-        <input {...register('category')} />
-        <p>{errors.category?.message}</p>
-      </div>
-      <div>
-        <label>Description</label>
-        <textarea {...register('description')} />
-        <p>{errors.description?.message}</p>
-      </div>
-      <div>
-        <label>Stock</label>
-        <input type="number" {...register('stock')} />
-        <p>{errors.stock?.message}</p>
-      </div>
-      <div>
-        <label>Specifications</label>
-        <Controller
-          name="specifications"
-          control={control}
-          render={({ field }) => (
-            <textarea {...field} placeholder="Format: key=value, one per line" />
-          )}
-        />
-      </div>
-      <div>
-        <label>Images</label>
-        <input type="file" multiple {...register('images')} />
-      </div>
-      <button type="submit">Add Product</button>
-    </form>
+    </div>
   );
 };
 
