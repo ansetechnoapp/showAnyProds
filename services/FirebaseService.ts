@@ -3,12 +3,12 @@ import { initializeAuth, GoogleAuthProvider, inMemoryPersistence } from 'firebas
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { getDatabase, Database } from 'firebase/database';
-import { firebaseConfig } from '../config/firebaseConfig';
+import { firebaseConfigRemix } from '../config/firebaseConfig';
 import { UtilsHandle } from '../utils/index';
 import { User } from "@/interface/types";
 
 // Initialisation de Firebase avec la persistance de l'authentification
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfigRemix);
 const auth = initializeAuth(app, {
   persistence: inMemoryPersistence
 });
