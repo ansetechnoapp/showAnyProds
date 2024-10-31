@@ -13,6 +13,10 @@ const schema = yup.object({
   category: yup.string().required('Category is required'),
   description: yup.string().required(),
   stock: yup.number().min(0, 'Stock cannot be negative').required(),
+  contactNumber: yup.string().required('Contact number is required'),
+  company: yup.string().required('Company is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  socialMedia: yup.string().url('Invalid URL').required('Social media link is required'),
 }).required();
 
 const AdminForm: React.FC = () => {
@@ -26,6 +30,10 @@ const AdminForm: React.FC = () => {
       specifications: {},
       images: null,
       stock: 0,
+      contactNumber: '',
+      company: '',
+      email: '',
+      socialMedia: '',
     }
   });
 
@@ -107,6 +115,43 @@ const AdminForm: React.FC = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
               {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Contact Number</label>
+              <input
+                {...register('contactNumber')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.contactNumber && <p className="mt-1 text-sm text-red-600">{errors.contactNumber.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Company</label>
+              <input
+                {...register('company')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.company && <p className="mt-1 text-sm text-red-600">{errors.company.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                {...register('email')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Social Media</label>
+              <input
+                {...register('socialMedia')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.socialMedia && <p className="mt-1 text-sm text-red-600">{errors.socialMedia.message}</p>}
             </div>
 
             <div>
