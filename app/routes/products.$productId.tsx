@@ -57,7 +57,7 @@ const ProductDetail = () => {
     <>
     <nav className="flex items-center justify-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <h2 className="text-2xl font-bold text-gray-800">Planeect</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Planetech sarl</h2>
       </div>
     </nav>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -136,9 +136,9 @@ const ProductDetail = () => {
     <Footer />
       {/* Modal for User Info */}
       <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
-        <h2 className="text-2xl font-bold mb-4">Enter Your Information</h2>
+        <h2 className="text-2xl font-bold mb-4">Entrer vos informations</h2>
         <form onSubmit={handleFormSubmit}>
-          <label className="block mb-2">Name:</label>
+          <label className="block mb-2">Nom:</label>
           <input
             type="text"
             value={userInfo.name}
@@ -154,7 +154,7 @@ const ProductDetail = () => {
             required
             className="w-full mb-4 p-2 border rounded"
           />
-          <label className="block mb-2">Address:</label>
+          <label className="block mb-2">Addresse:</label>
           <input
             type="text"
             value={userInfo.address}
@@ -180,8 +180,8 @@ const Footer = () => {
         <div className="flex justify-between">
           <div>
             <h5 className="font-bold">Contact</h5>
-            <p>Email: support@planeect.com</p>
-            <p>Téléphone: +1 (234) 567-8901</p>
+            <p>Email: wettecnologie1@gmail.com</p>
+            <p>Téléphone: +229 98 53 52 83</p>
           </div>
           <div>
             <h5 className="font-bold">Liens utiles</h5>
