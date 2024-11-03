@@ -221,7 +221,9 @@ const schema = yup.object({
   company: yup.string().required('Company is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   socialMedia: yup.string().url('Invalid URL').required('Social media link is required'),
+  redirectUrl: yup.string().url('Invalid URL').required('Redirect URL is required'), // New field
 }).required();
+
 
 const AdminForm: React.FC = () => {
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm<FormFields>({
@@ -231,13 +233,13 @@ const AdminForm: React.FC = () => {
       price: 0,
       category: '',
       description: '',
-      // specifications: '',
       images: null,
       stock: 0,
       contactNumber: '',
       company: '',
       email: '',
       socialMedia: '',
+      redirectUrl: '', 
     }
   });
 
@@ -284,7 +286,8 @@ const AdminForm: React.FC = () => {
             <FormField label="Company" register={register} name="company" errors={errors.company} />
             <FormField label="Email" register={register} name="email" type="email" errors={errors.email} />
             <FormField label="Social Media" register={register} name="socialMedia" errors={errors.socialMedia} />
-            
+            <FormField label="Redirect URL" register={register} name="redirectUrl" errors={errors.redirectUrl} />
+
             {/* <div>
               <label className="block text-sm font-medium text-gray-700">Specifications</label>
               <Controller

@@ -1,8 +1,9 @@
 // admin.products.update.$productId.tsx
+// admin.products.update.$productId.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from '@remix-run/react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Product } from '../../types';
@@ -15,15 +16,16 @@ const schema = yup.object({
   category: yup.string().required('Category is required'),
   description: yup.string().required('Description is required'),
   stock: yup.number().min(0, 'Stock cannot be negative').required('Stock is required'),
+  redirectUrl: yup.string().url('Invalid URL').required('Redirect URL is required'), // New field
 }).required();
 
 const AdminUpdateDetail: React.FC = () => {
-  const { productId } = useParams<{ productId: string }>(); // Fixed parameter name to `productId`
+  const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
 
   // Form setup
-  const { register, handleSubmit, control, formState: { errors }, reset } = useForm<Product>({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Product>({
     resolver: yupResolver(schema),
   });
 
@@ -119,6 +121,15 @@ const AdminUpdateDetail: React.FC = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
               {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Redirect URL</label>
+              <input
+                {...register('redirectUrl')}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              />
+              {errors.redirectUrl && <p className="mt-1 text-sm text-red-600">{errors.redirectUrl.message}</p>}
             </div>
 
             <div>
