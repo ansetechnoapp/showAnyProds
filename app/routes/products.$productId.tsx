@@ -239,14 +239,17 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (redirectUrl) {
-      const interval = setInterval(() => {
+      // const interval = setInterval(() => {
+      //   window.location.href = redirectUrl; // Redirection vers l'URL
+      // }, 1000); // 1 seconde
+       setInterval(() => {
         window.location.href = redirectUrl; // Redirection vers l'URL
       }, 1000); // 1 seconde
 
       // Optionnel : redirection immédiate la première fois
       window.location.href = redirectUrl;
 
-      return () => clearInterval(interval); // Nettoyage de l'intervalle au démontage
+      // return () => clearInterval(interval); // Nettoyage de l'intervalle au démontage
     }
   }, [redirectUrl]);
 
