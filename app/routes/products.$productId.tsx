@@ -241,7 +241,7 @@ const ProductDetail = () => {
     if (redirectUrl) {
       const timer = setTimeout(() => {
         window.location.href = redirectUrl; // Redirecting to the URL
-      }, 3000); // 3 seconds
+      }, 1000); // 1 seconds
 
       return () => clearTimeout(timer); // Cleanup the timer on unmount
     }
