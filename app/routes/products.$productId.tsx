@@ -239,11 +239,15 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (redirectUrl) {
-      const timer = setTimeout(() => {
-        window.location.href = redirectUrl; // Redirecting to the URL
-      }, 1000); // 1 seconds
+      // const timer = setTimeout(() => {
+      //   window.location.href = redirectUrl; // Redirecting to the URL
+      // }, 1000); // 1 seconds
 
-      return () => clearTimeout(timer); // Cleanup the timer on unmount
+      // return () => clearTimeout(timer); // Cleanup the timer on unmount
+      setTimeout(() => {
+        window.location.href = redirectUrl; // Redirecting to the URL
+      }, 1000);
+      
     }
   }, [redirectUrl]);
 
