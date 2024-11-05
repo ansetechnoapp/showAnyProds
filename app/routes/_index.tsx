@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from '@remix-run/react';
 import { collection, getDocs } from 'firebase/firestore';
 import { Product } from '../../types';
