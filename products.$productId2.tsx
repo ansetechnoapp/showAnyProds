@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from '@remix-run/react';
-import { doc, getDoc, query, where } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { Product } from '../../types';
-import FirebaseService from "../../services/FirebaseService"; 
+import FirebaseService from "../../services/FirebaseService";
 import { collection, getDocs } from 'firebase/firestore';
 import { Link } from '@remix-run/react';
 import { Loader2 } from "lucide-react";
 import Modal from 'react-modal';
 import Navbar from '../components/navbar';
 import { sendEmail } from "../../services/EmailService.ts";
-import { useNavigate } from 'react-router-dom';
 import Buy from './buy';
+
 
 
 const ProductDetail = () => {
@@ -21,7 +21,6 @@ const ProductDetail = () => {
   const [userInfo, setUserInfo] = useState({ name: '', email: '', address: '' });
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null); // State for redirect URL
   const isTrending = true;
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
 
 
@@ -52,30 +51,14 @@ const ProductDetail = () => {
           } as Product;
           setProduct(productData);
           setSelectedImage(productData.images[0]);
-          setRedirectUrl(productData.redirectUrl || null); 
-           // Fetch related products
-           fetchRelatedProducts(productData.category);// Assuming redirectUrl is a field in product data
+          setRedirectUrl(productData.redirectUrl || null); // Assuming redirectUrl is a field in product data
         } else {
           console.error('Product not found');
         }
       }
     };
-
-    const fetchRelatedProducts = async (category: string) => {
-      const productsRef = collection(FirebaseService.firestore, 'products');
-      const q = query(productsRef, where('category', '==', category));
-      const querySnapshot = await getDocs(q);
-      const related = querySnapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() } as Product))
-        .filter(p => p.id !== productId); // Exclude the current product
-      setRelatedProducts(related);
-    };
-
     fetchProduct();
   }, [productId]);
-
-  
-
 
   useEffect(() => {
     if (redirectUrl) {
@@ -255,6 +238,7 @@ const ProductDetail = () => {
                 </button>
               </div> 
             </div>
+
             {/* Boutons de partage social */}
             <div className="mt-6 p-1   flex space-x-4 flex space-8-4 ">
               <button className="bg-gray-300 text-gray-700 px-2 py-1 rounded hover:bg-gray-400">Partager sur Facebook</button>
@@ -269,54 +253,70 @@ const ProductDetail = () => {
 
 
 
-      <h2 className="text-3xl font-bold text-gray-800 mb-8 mt-8 text-center">Les produits de même Categories</h2>
-      <div className=" ">
-        {
-          relatedProducts.length > 1 ? (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                {relatedProducts.map((relatedProduct) => (
+       <h2 className="text-3xl font-bold text-gray-800 mb-8 mt-8 text-center">Les products de même Categories</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.filter(sameCategie=>sameCategie.name=sameCategie.idx).map(product => (
           <div>
-             <Link
-                key={relatedProduct.id}
-                to={`/products/${relatedProduct.id}`}
-                className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="aspect-w-4 aspect-h-3 overflow-hidden bg-gray-100">
+             <Link 
+            key={product.id}
+            to={`/products/${product.id}`}
+            className="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+          >
+            <div className="aspect-w-16 aspect-h-9 overflow-hidden bg-gray-100">
+              <div className="flex gap-2 p-2 overflow-x-auto">
+                {product.images.map((url, idx) => (
                   <img
-                    src={relatedProduct.images[0]}
-                    alt={relatedProduct.name}
-                    className="object-cover"
+                    key={idx}
+                    src={url}
+                    alt={`${product.name} - ${idx + 1}`}
+                    className="h-32 w-32 object-cover rounded"
                   />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{relatedProduct.name}</h3>
-                  <p className="text-gray-700">${relatedProduct.price}</p>
-                </div>
-              </Link>
+                ))}
+              </div>
+            </div>
+            
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-blue-600">
+                {product.name}
+              </h3>
+              
+              <div className="space-y-2">
+                <p className="text-lg font-bold text-blue-600">
+                  ${product.price}
+                </p>
+                
+                <p className="text-sm text-gray-600">
+                  <span className="inline-block bg-gray-100 px-2 py-1 rounded">
+                    {product.category}
+                  </span>
+                </p>
+                
+                <p className="text-gray-600 line-clamp-2">
+                  {product.description}
+                </p>
+                
+                <p className="text-sm text-gray-500">
+                  Stock: <span className="font-medium">{product.stock}</span>
+                </p>
+              </div>
+            </div>
+            </Link>
             <button
-                  disabled={relatedProduct.stock === 0}
+                  disabled={product.stock === 0}
                   className={`w-full py-3 px-4 rounded-lg font-medium text-white ${
-                    relatedProduct.stock > 0
+                    product.stock > 0
                       ? 'bg-blue-600 hover:bg-blue-700'
                       : 'bg-gray-400 cursor-not-allowed'
                   }`}
-                >                
-                  {relatedProduct.stock > 0 ? 
-                  (<Buy />) : 'Stock épuisé'}
-            </button>
+                >
+                  
+                  {product.stock > 0 ? 
+                  (<Buy />) : 'Out of Stock'}
+                </button>
           
           </div>
           
         ))}
-            </div>
-            
-          ):(
-            <p className="text-orange-900 text-center mt-4">
-
-               Il n'y a qu'un seul produit dans cette catégorie.
-            </p>
-          )
-        }
         
       </div>
 
